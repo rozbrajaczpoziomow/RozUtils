@@ -29,12 +29,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.network.FMLNetworkEvent
 import java.awt.Color
 
-class HUDHandler {
-	companion object {
-		val instance = HUDHandler()
-	}
-	private constructor()
-
+object HUDHandler {
 	val coordinates = ConfigHelper({ ConfigHandler.client.hud.position }) {
 		val split = it.split(',')
 		split[0].toInt() to split[1].toInt()
@@ -73,7 +68,8 @@ class HUDHandler {
 	}
 
 	@SubscribeEvent
-	fun serverJoin(ev: FMLNetworkEvent.ClientConnectedToServerEvent) = MessageHandler.reset()
+	fun serverJoin(ev: FMLNetworkEvent.ClientConnectedToServerEvent) =
+		MessageHandler.reset()
 
 	object MessageHandler {
 		private var last = 0L

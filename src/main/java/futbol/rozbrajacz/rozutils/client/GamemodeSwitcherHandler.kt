@@ -33,12 +33,7 @@ import net.minecraftforge.fml.common.gameevent.InputEvent
 import org.lwjgl.input.Keyboard
 import java.awt.Color
 
-class GamemodeSwitcherHandler {
-	companion object {
-		val instance = GamemodeSwitcherHandler()
-	}
-	private constructor()
-
+object GamemodeSwitcherHandler {
 	var previouslyWas: GameType? = null
 	val mc: Minecraft = Minecraft.getMinecraft()
 
@@ -147,9 +142,9 @@ class GamemodeSwitcherHandler {
 		override fun handleKeyboardInput() {
 			// if we stop holding down F3, switch to whichever gamemode we have selected and hide it
 			if(Keyboard.getEventKey() == Keyboard.KEY_F3 && !Keyboard.getEventKeyState()) {
-				val currentGamemode = GamemodeSwitcherHandler.instance.getGamemode()
+				val currentGamemode = getGamemode()
 				if(currentGamemode != selectedGamemode) {
-					GamemodeSwitcherHandler.instance.previouslyWas = currentGamemode
+					previouslyWas = currentGamemode
 					sendChatMessage("/gamemode ${selectedGamemode.getName()}", false)
 				}
 				mc.displayGuiScreen(null)

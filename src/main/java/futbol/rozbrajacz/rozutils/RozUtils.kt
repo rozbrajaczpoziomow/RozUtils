@@ -48,9 +48,9 @@ object RozUtils {
 	@Mod.EventHandler
 	fun preInit(e: FMLPreInitializationEvent) {
 		if(FMLCommonHandler.instance().effectiveSide.isClient) {
-			MinecraftForge.EVENT_BUS.register(HUDHandler.instance)
-			MinecraftForge.EVENT_BUS.register(GamemodeSwitcherHandler.instance)
-			MinecraftForge.EVENT_BUS.register(ClientEventHandler.instance)
+			MinecraftForge.EVENT_BUS.register(HUDHandler)
+			MinecraftForge.EVENT_BUS.register(GamemodeSwitcherHandler)
+			MinecraftForge.EVENT_BUS.register(ClientEventHandler)
 		}
 		networkChannel.registerMessage(ServerHandler::class.java, ArrayPacket::class.java, 0, Side.SERVER)
 		networkChannel.registerMessage(ClientHandler::class.java, ArrayPacket::class.java, 0, Side.CLIENT)
@@ -59,7 +59,7 @@ object RozUtils {
 	@Mod.EventHandler
 	fun serverStarting(e: FMLServerStartingEvent) {
 		if(ConfigHandler.server.command.enabled)
-			e.registerServerCommand(RozUtilsCommand.instance)
+			e.registerServerCommand(RozUtilsCommand)
 	}
 
 	const val VERSION = "${Reference.MOD_NAME} [%s] ${Reference.VERSION} (${Reference.GIT_COMMIT_HASH_SHORT}) built on ${Reference.BUILD_DATE}"

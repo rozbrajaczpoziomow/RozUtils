@@ -35,27 +35,30 @@ import net.minecraftforge.common.DimensionManager
 import net.minecraftforge.server.command.CommandTreeBase
 import java.util.*
 
-class RozUtilsCommand : CommandTreeBase {
-	companion object {
-		val instance = RozUtilsCommand()
-	}
-	private constructor() : super()
+object RozUtilsCommand : CommandTreeBase() {
+	override fun getName() =
+		"rozutils"
 
-	override fun getName() = "rozutils"
-	override fun getAliases() = listOf("ru")
+	override fun getAliases() =
+		listOf("ru")
 
 	init {
-		addSubcommand(Help())
-		addSubcommand(Stats())
-		addSubcommand(Entities())
-		addSubcommand(Players())
-		addSubcommand(Version())
+		addSubcommand(Help)
+		addSubcommand(Stats)
+		addSubcommand(Entities)
+		addSubcommand(Players)
+		addSubcommand(Version)
 	}
 
-	override fun getUsage(sender: ICommandSender) = "meow"
+	override fun getUsage(sender: ICommandSender) =
+		"meow"
 
 	// technically only used in CommandBase but doesn't hurt
-	override fun getRequiredPermissionLevel() = if(ConfigHandler.server.command.op) 4 else 0
+	override fun getRequiredPermissionLevel() =
+		if(ConfigHandler.server.command.op)
+			4
+		else
+			0
 
 	override fun checkPermission(server: MinecraftServer, sender: ICommandSender): Boolean {
 		if(!ConfigHandler.server.command.op || server.isSinglePlayer)
@@ -64,10 +67,12 @@ class RozUtilsCommand : CommandTreeBase {
 		return sender !is EntityPlayer || server.playerList.oppedPlayers.getPermissionLevel(sender.gameProfile) != 0
 	}
 
-	class Help : CommandBase() {
-		override fun getName() = "help"
+	object Help : CommandBase() {
+		override fun getName() =
+			"help"
 
-		override fun getUsage(sender: ICommandSender) = "$name meow"
+		override fun getUsage(sender: ICommandSender) =
+			"$name meow"
 
 		override fun execute(server: MinecraftServer, sender: ICommandSender, args: Array<out String?>) {
 			sender.reply("/rozutils help - send help")
@@ -82,15 +87,17 @@ class RozUtilsCommand : CommandTreeBase {
 		}
 	}
 
-	class Stats : CommandBase() {
+	object Stats : CommandBase() {
 		// leaving original format comment I wrote:
 		// Server: %.2f (coloured, 20 - green, != 20 - yellow, < 18 - red) TPS, %.1f ms/t (coloured, < 50 - green, < 55 - yellow, else - red) average
 		// Current dim (%d %s {name}): {^}
 		// Worst dim (%d %s): {^} {worst in terms of slowest mspt}
 
-		override fun getName() = "stats"
+		override fun getName() =
+			"stats"
 
-		override fun getUsage(sender: ICommandSender) = "$name meow"
+		override fun getUsage(sender: ICommandSender) =
+			"$name meow"
 
 		// code similar to net/ServerHandler.kt which was itself stolen from forge's TpsCommand
 		private inline fun LongArray.formatTPSData(): String {
@@ -128,10 +135,12 @@ class RozUtilsCommand : CommandTreeBase {
 		}
 	}
 
-	class Entities : CommandBase() {
-		override fun getName() = "entities"
+	object Entities : CommandBase() {
+		override fun getName() =
+			"entities"
 
-		override fun getUsage(sender: ICommandSender) = "$name meow"
+		override fun getUsage(sender: ICommandSender) =
+			"$name meow"
 
 		private inline fun <T : Any>List<T>.stat(): List<Pair<Class<out T>, Int>> {
 			val frequency = hashMapOf<Class<out T>, Int>()
@@ -199,10 +208,12 @@ class RozUtilsCommand : CommandTreeBase {
 		}
 	}
 
-	class Players : CommandBase() {
-		override fun getName() = "players"
+	object Players : CommandBase() {
+		override fun getName() =
+			"players"
 
-		override fun getUsage(sender: ICommandSender) = "$name meow"
+		override fun getUsage(sender: ICommandSender) =
+			"$name meow"
 
 		override fun execute(server: MinecraftServer, sender: ICommandSender, args: Array<out String>) {
 			// /rozutils players - overall info
@@ -212,10 +223,12 @@ class RozUtilsCommand : CommandTreeBase {
 		}
 	}
 
-	class Version : CommandBase() {
-		override fun getName() = "version"
+	object Version : CommandBase() {
+		override fun getName() =
+			"version"
 
-		override fun getUsage(sender: ICommandSender) = "$name meow"
+		override fun getUsage(sender: ICommandSender) =
+			"$name meow"
 
 		override fun execute(server: MinecraftServer, sender: ICommandSender, args: Array<out String?>) {
 			// /rozutils version - server version info (client version info provided by ClientEventHandler#runCommand)
@@ -224,9 +237,14 @@ class RozUtilsCommand : CommandTreeBase {
 	}
 }
 
-internal inline fun ICommandSender.reply(msg: String) = sendMessage(TextComponentString(msg))
-internal inline fun ICommandSender.reply(msg: String, command: String) = replyOther(msg, "/rozutils $command")
-internal inline fun ICommandSender.replyOther(msg: String, command: String) = sendMessage(TextComponentString(msg).setStyle(Style().setClickEvent(ClickEvent(ClickEvent.Action.RUN_COMMAND, command))))
+internal inline fun ICommandSender.reply(msg: String) =
+	sendMessage(TextComponentString(msg))
+
+internal inline fun ICommandSender.reply(msg: String, command: String) =
+	replyOther(msg, "/rozutils $command")
+
+internal inline fun ICommandSender.replyOther(msg: String, command: String) =
+	sendMessage(TextComponentString(msg).setStyle(Style().setClickEvent(ClickEvent(ClickEvent.Action.RUN_COMMAND, command))))
 
 private inline fun Int.getDimInfo(): String {
 	val provider = DimensionManager.getProviderType(this)
@@ -241,10 +259,17 @@ private inline fun String.int(): Int {
 	}
 }
 
-private inline fun Int.s(singular: String, plural: String) = if(this == 1) singular else plural
+private inline fun Int.s(singular: String, plural: String) =
+	if(this == 1)
+		singular
+	else
+		plural
 
 private inline fun String.tp(dim: Int, sender: ICommandSender) =
 	if(sender is EntityPlayer)
-		if(sender.dimension == dim) "/tp @s $this" else "/forge setdim @s $dim $this"
+		if(sender.dimension == dim)
+			"/tp @s $this"
+		else
+			"/forge setdim @s $dim $this"
 	else
 		""

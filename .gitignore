@@ -24,3 +24,4 @@ build
 eclipse
 run
 examples
+maven-publishing.credentials

@@ -90,6 +90,11 @@ object ConfigHandler {
 			@JvmField
 			@Config.Name("Enable the Gamemode Switcher from 1.16+")
 			var enabled = true
+
+			@JvmField
+			@Config.Name("Change the keybind in the Controls screen instead of the default F3+F4")
+			@Config.RequiresMcRestart
+			var changeKeybind = false
 		}
 	}
 

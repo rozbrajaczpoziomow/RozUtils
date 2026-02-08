@@ -25,6 +25,7 @@ import futbol.rozbrajacz.rozutils.net.ServerHandler
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.common.Mod
+import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent
 import net.minecraftforge.fml.common.network.NetworkRegistry
@@ -54,6 +55,13 @@ object RozUtils {
 		}
 		networkChannel.registerMessage(ServerHandler::class.java, ArrayPacket::class.java, 0, Side.SERVER)
 		networkChannel.registerMessage(ClientHandler::class.java, ArrayPacket::class.java, 0, Side.CLIENT)
+	}
+
+	@Suppress("unused")
+	@Mod.EventHandler
+	fun init(e: FMLInitializationEvent) {
+		if(FMLCommonHandler.instance().effectiveSide.isClient)
+			GamemodeSwitcherHandler.addKeybinds()
 	}
 
 	@Mod.EventHandler
